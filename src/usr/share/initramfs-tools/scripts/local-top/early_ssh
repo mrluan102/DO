@@ -129,6 +129,6 @@ rm /bin/finished
 kill `pidof dropbear`
 
 # shut down the networking
-ifconfig $INTERFACE down
+ifconfig $INTERFACE 0.0.0.0 down
 
 exit 0
