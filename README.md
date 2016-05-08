@@ -2,8 +2,11 @@ early-ssh
 =========
 
 early-ssh gives you an SSH server during the boot of your Linux system. It starts before the root filesystem is mounted so you can unlock your encrypted root filesystem interactively, you don't have to be at the console of your server. You can also scp files to your server so you can even start your key-encrypted system.
+You can also shrink your root filesystem or full replace your OS.
 
 early-ssh is basically an update-iniramfs hook script and a boot script that starts dropbear SSH server in the initramfs during boot.
+
+Tested on Ubuntu 16.04, 14.04 and Debian 8.
 
 Features
 --------
@@ -38,6 +41,69 @@ You can move the early-ssh server on a different port.
 See `PORT` in config.
 
 Example: `PORT=2233`
+
+
+
+Example of shrinking root filesystem
+----------------------------------------
+### 1. Init early-ssh on target host:
+```
+apt-get install git dropbear
+git clone https://github.com/roginvs/early-ssh
+cd early-ssh
+./build_deb.sh
+dpkg -i early-ssh*.deb
+sed -ie 's/DISABLED=1/DISABLED=0/' /etc/early-ssh/early-ssh.conf  # Enable
+update-initramfs -u
+reboot
+```
+Ping your host IP address until you will see responses with changed TTL. After this you have 15 (TIMEOUT) seconds to login by ssh before boot process with continue.
+### 2. Resize filesystem and partition when you will be logged in into initrd by ssh:
+```
+e2fsck -f /dev/sda1
+resize2fs /dev/sda1 5G
+fdisk /dev/sda # remove old partition and create new starting from same block, but with reduced size. Do not forget to set boot flag
+> d
+> n
+>> p
+>> 1
+>> 2048
+>> +5G
+> a
+> w
+# (Or use parted if GPT)
+
+```
+### 3. Update Grub
+```
+mkdir /mnt
+mount /dev/sda1 /mnt
+mount -o bind /dev/ /mnt/dev/
+mount -o bind /proc/ /mnt/proc/
+mount -o bind /sys/ /mnt/sys/
+chroot /mnt
+PATH=$PATH:/usr/sbin
+grub-install /dev/sda
+update-grub2
+exit
+cd /
+umount /mnt/dev
+umount /mnt/proc
+umount /mnt/sys
+umount /mnt
+``` 
+### 4. Reboot
+```
+reboot
+reboot -f
+```
+
+Example of moving OS from other host
+----------------------------------------
+1. Turn both hosts to boot into ramdisk (stage 1 at "Example of shrinking root filesystem")
+2A. Create new filesystem on /dev/sda1 and rsync all files from source host to destination host
+2B. Or dd all partitition from source to destination host
+3. Update grub as in stage 3 at "Example of shrinking root filesystem"
 
 
 A real-life example with RAID-1 and LUKS
