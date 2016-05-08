@@ -27,11 +27,28 @@ copy_exec /sbin/ifconfig sbin/
 copy_exec /sbin/route sbin/
 [ -f /usr/bin/scp ] && copy_exec /usr/bin/scp bin/
 
+copy_exec /usr/bin/rsync bin/
+copy_exec /bin/dd bin/
+copy_exec /sbin/fdisk sbin/
+copy_exec /sbin/partprobe sbin/
+copy_exec /bin/nc bin
+
+
 # copy the configs
 cp -rp /etc/dropbear/dropbear_dss_host_key $DESTDIR/etc/dropbear/
 cp -rp /etc/dropbear/dropbear_rsa_host_key $DESTDIR/etc/dropbear/
+
+/usr/lib/dropbear/dropbearconvert openssh dropbear /etc/ssh/ssh_host_rsa_key /etc/initramfs-tools/etc/dropbear/dropbear_rsa_host_key
+/usr/lib/dropbear/dropbearconvert openssh dropbear /etc/ssh/ssh_host_ecdsa_key /etc/initramfs-tools/etc/dropbear/dropbear_ecdsa_host_key
+
 cp -rp /etc/localtime $DESTDIR/etc/
-[ -f /root/.ssh/authorized_keys ] && cp -rp /root/.ssh/authorized_keys $DESTDIR/root/.ssh/authorized_keys
+if [ -f /root/.ssh/authorized_keys ]; then
+  cp -rp /root/.ssh/authorized_keys $DESTDIR/root/.ssh/authorized_keys
+  # For somereasons previous line is not working
+  mkdir -p /etc/initramfs-tools/root/.ssh
+  cp -rp /root/.ssh/authorized_keys /etc/initramfs-tools/root/.ssh/authorized_keys
+fi
+
 cp -rp /etc/login.defs $DESTDIR/etc/
 cp -rp /etc/early-ssh/early-ssh.conf $DESTDIR/etc/early-ssh/
 
