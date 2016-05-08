@@ -1,3 +1,6 @@
+2016-05-07 v0.3.8
+    * Added hackyway network interfaces options
+
 2016-05-07 vR.0.3.8
     * Changed timeout logic - now timeout will tick only if there is no active ssh session
     * Merged https://github.com/PeterSurda/early-ssh

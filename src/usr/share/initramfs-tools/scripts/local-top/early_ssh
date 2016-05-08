@@ -15,7 +15,7 @@ prereqs)
 	;;
 esac
 
-version="R.0.3.8"
+version="0.3.9"
 
 . /etc/early-ssh/early-ssh.conf
 
