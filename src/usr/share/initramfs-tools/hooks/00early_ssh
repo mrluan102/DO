@@ -86,3 +86,8 @@ if [ "$GROUP_OVERRIDE" != "" ]; then
 else
 	cat /etc/group | grep -E '^root:' >> $DESTDIR/etc/group
 fi
+
+echo ""
+echo "Network configuration on $INTERFACE: IP=$IP, MASK=$NETMASK, GW=$GATEWAY"
+echo ""
+
