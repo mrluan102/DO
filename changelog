@@ -1,3 +1,7 @@
+2016-05-07 vR.0.3.8
+    * Changed timeout logic - now timeout will tick only if there is no active ssh session
+    * Merged https://github.com/PeterSurda/early-ssh
+
 2013-xx-xx v0.3.7
     * bugfix: #1 can start when an ssh server (dropbear) is already
       running

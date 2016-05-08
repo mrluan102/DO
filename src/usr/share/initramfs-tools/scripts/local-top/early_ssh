@@ -15,7 +15,7 @@ prereqs)
 	;;
 esac
 
-version="0.3.7-testing"
+version="R.0.3.8"
 
 . /etc/early-ssh/early-ssh.conf
 
@@ -104,6 +104,7 @@ else
 fi
 
 timeout=$TIMEOUT
+echo ""
 
 while [ /bin/true ]; do
 	# check if the user presses enter
@@ -117,6 +118,13 @@ while [ /bin/true ]; do
 	if [ "$TIMEOUT" != "" ]; then
 		timeout=$((timeout - 1))
 		[ $timeout = 0 ] && break
+
+	        if [ `ps w | grep dropbear | wc -l` -gt 2 ]; then
+                        echo -en `date`" Active SSH session detected.                                         \r"
+			timeout=$TIMEOUT
+	        else
+			echo -en `date`" No SSH session, timeout is $timeout                                  \r"
+		fi
 	fi
 done
 

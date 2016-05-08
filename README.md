@@ -19,11 +19,11 @@ See `PASSWD_OVERRIDE`, `SHADOW_OVERRIDE`, `GROUP_OVERRIDE` in config.
 Example: `SHADOW_OVERRIDE="/etc/early-ssh/shadow"`
 
 ### Timeout to continue the boot
-A timeout can be specified to continue the boot after a certain time.
+A timeout can be specified to continue the boot if there was no dropbear connections for this amount of seconds.
 
 See `TIMEOUT` in config.
 
-Example: `TIMEOUT=600`
+Example: `TIMEOUT=15`
 
 ### Specify network interface by MAC address
 If you have more than one network interface and they get scrambled on boot it is possible to specify the correct interface by MAC address instead of the name ("eth0" for example).
