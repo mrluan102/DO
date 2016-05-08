@@ -56,6 +56,11 @@ echo ""
 mkdir /dev/pts
 mount -t devpts devpts /dev/pts
 
+echo "Hacky sleep"
+sleep 5
+echo "Ok, setting up network"
+OLD_TTL=`cat /proc/sys/net/ipv4/ip_default_ttl`
+echo 200 > /proc/sys/net/ipv4/ip_default_ttl
 # set up networking
 /sbin/ifconfig $INTERFACE $IP netmask $NETMASK up
 /sbin/route add default gw $GATEWAY
@@ -127,6 +132,8 @@ while [ /bin/true ]; do
 		fi
 	fi
 done
+
+echo $OLD_TTL > /proc/sys/net/ipv4/ip_default_ttl
 
 # restore the entropy device
 rm /dev/random
