@@ -101,8 +101,8 @@ reboot -f
 Example of moving OS from other host
 ----------------------------------------
 1. Turn both hosts to boot into ramdisk (stage 1 at "Example of shrinking root filesystem")
-2A. Create new filesystem on /dev/sda1 and rsync all files from source host to destination host
-2B. Or dd all partitition from source to destination host
+2. A: Create new filesystem on /dev/sda1 and rsync all files from source host to destination host
+2. B: Or dd all partitition from source to destination host
 3. Update grub as in stage 3 at "Example of shrinking root filesystem"
 
 
