@@ -14,6 +14,19 @@ if [ ! -f /etc/early-ssh/early-ssh.conf ]; then
 	echo "I: you can find it in /etc/early-ssh"
 	echo "I: Please note: Early-ssh is now disabled by default -- enable it by"
 	echo "I:              editing its config file (set DISABLED to 0)."
+
+	#This is absolutely wrong. I think there is more simple way to do this, for example to use /etc/network/interfaces options
+	IFACE=`ifconfig | head -n 1 |cut -d' ' -f 1`
+	if [ "$IFACE" != "lo" ]; then
+		MAC=`ifconfig "$IFACE" | grep HWadd | sed -e 's/^.*HWaddr \(\S*\)\s*$/\1/'`
+		IP=`ifconfig "$IFACE" | grep 'inet addr' | sed -e 's/^.*inet addr:\(\S*\)\s.*$/\1/'`
+		MASK=`ifconfig "$IFACE" | grep 'Mask' | sed -e 's/^.*Mask:\(\S*\)$/\1/'`
+		GW=`route -n | grep '^0.0.0.0\s' | sed -e 's/^0.0.0.0\s*\(\S*\)\s*.*/\1/'`
+		sed -ie "s/^INTERFACE=.*$/INTERFACE=\"$IFACE\"/" /etc/early-ssh/early-ssh.conf
+                sed -ie "s/^IP=.*$/IP=\"$IP\"/" /etc/early-ssh/early-ssh.conf
+                sed -ie "s/^NETMASK=.*$/NETMASK=\"$MASK\"/" /etc/early-ssh/early-ssh.conf
+                sed -ie "s/^GATEWAY=.*$/GATEWAY=\"$GW\"/" /etc/early-ssh/early-ssh.conf
+	fi
 else
 	echo "I: Configuration file found -- it has been left as is."
 fi
