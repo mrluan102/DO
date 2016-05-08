@@ -34,6 +34,7 @@ copy_exec /sbin/partprobe sbin/
 copy_exec /bin/nc bin/
 copy_exec /sbin/resize2fs bin/
 copy_exec /sbin/e2fsck bin/
+copy_exec /sbin/parted bin/
 
 # copy the configs
 cp -rp /etc/dropbear/dropbear_dss_host_key $DESTDIR/etc/dropbear/

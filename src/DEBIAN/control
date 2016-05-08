@@ -4,7 +4,7 @@ Section: net
 Priority: optional
 Architecture: all
 Depends: dropbear, initramfs-tools, net-tools, libc6, zlib1g
-Suggests: openssh-client
+Suggests: openssh-client, parted
 Maintainer: Gabor Heja <early-ssh@dev.kakaopor.hu>
 Description: Adds a boottime SSH server into initramfs
  Early-ssh gives you the possibility to connect to your machine over SSH
