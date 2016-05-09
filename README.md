@@ -48,13 +48,13 @@ Example of shrinking root filesystem
 ----------------------------------------
 ### 1. Init early-ssh on target host:
 ```
-apt-get install git dropbear
-git clone https://github.com/roginvs/early-ssh
-cd early-ssh
-./build_deb.sh
-dpkg -i early-ssh*.deb
-sed -ie 's/DISABLED=1/DISABLED=0/' /etc/early-ssh/early-ssh.conf  # Enable
-update-initramfs -u
+apt-get install -y git dropbear && \
+git clone https://github.com/roginvs/early-ssh && \
+cd early-ssh && \
+./build_deb.sh && \
+dpkg -i early-ssh*.deb && \
+sed -ie 's/DISABLED=1/DISABLED=0/' /etc/early-ssh/early-ssh.conf  && \
+update-initramfs -u && \
 reboot
 ```
 Ping your host IP address until you will see responses with changed TTL. After this you have 15 (TIMEOUT) seconds to login by ssh before boot process with continue.
