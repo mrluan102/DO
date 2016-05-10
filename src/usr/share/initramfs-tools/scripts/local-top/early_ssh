@@ -77,7 +77,7 @@ After you have finished everything, run the following to continue the boot:
   finished
 
 For issues, bugreports, comments and contacts please see the project page:
-  https://github.com/gheja/early-ssh
+  https://github.com/roginvs/early-ssh
 
 EOF
 fi
