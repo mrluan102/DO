@@ -22,7 +22,7 @@ if [ ! -f /etc/early-ssh/early-ssh.conf ]; then
 		IP=`ifconfig "$IFACE" | grep 'inet addr' | sed -e 's/^.*inet addr:\(\S*\)\s.*$/\1/'`
 		MASK=`ifconfig "$IFACE" | grep 'Mask' | sed -e 's/^.*Mask:\(\S*\)$/\1/'`
 		GW=`route -n | grep '^0.0.0.0\s' | sed -e 's/^0.0.0.0\s*\(\S*\)\s*.*/\1/'`
-		sed -ie "s/^INTERFACE=.*$/INTERFACE=\"$IFACE\"/" /etc/early-ssh/early-ssh.conf
+		sed -ie "s/^INTERFACE=.*$/INTERFACE=\"MAC $MAC\"/" /etc/early-ssh/early-ssh.conf
                 sed -ie "s/^IP=.*$/IP=\"$IP\"/" /etc/early-ssh/early-ssh.conf
                 sed -ie "s/^NETMASK=.*$/NETMASK=\"$MASK\"/" /etc/early-ssh/early-ssh.conf
                 sed -ie "s/^GATEWAY=.*$/GATEWAY=\"$GW\"/" /etc/early-ssh/early-ssh.conf
